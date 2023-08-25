@@ -1,14 +1,14 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
-import { connectToDB } from "../../../../utils/db-connection";
-import User from "@/models/user";
+import { connectToDB } from "@/utils/db-connection";
+import User from "../../../../models/user";
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      googleId: process.env.GOOGLE_ID,
-      googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   callbacks: {
@@ -18,6 +18,7 @@ const handler = NextAuth({
       });
 
       session.user.id = sessionUser._id.toString();
+
       return session;
     },
     async signIn({ profile }) {
